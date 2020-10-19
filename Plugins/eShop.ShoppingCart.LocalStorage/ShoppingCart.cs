@@ -13,7 +13,7 @@ namespace eShop.ShoppingCart.LocalStorage
     public class ShoppingCart : IShopingCart
     {
         private readonly IJSRuntime jSRuntime;
-        private const string cstrShoppingCart = "eShop.ShoppingCart";        
+        private const string cstrShoppingCart = "eShop.ShoppingCart";
         private readonly IProductRepository productRepository;
 
         public ShoppingCart(IJSRuntime jsRuntime, IProductRepository productRepository)
@@ -65,18 +65,19 @@ namespace eShop.ShoppingCart.LocalStorage
             if (!string.IsNullOrWhiteSpace(strOrder) && strOrder.ToLower() != "null")
                 order = JsonConverter.DeserializeObject<Object>(strOrder);
             //else
-        //    {
-        //        order = new Order();
-        //        await SetOrder(order);
-        //    }
+            //    {
+            //        order = new Order();
+            //        await SetOrder(order);
+            //    }
 
-        //    foreach (var item in order.LineItems)
-        //    {
-        //        item.Product = productRepository.GetProduct(item.ProductId);
-        //    }
+            //    foreach (var item in order.LineItems)
+            //    {
+            //        item.Product = productRepository.GetProduct(item.ProductId);
+            //    }
 
-        //    return order;
-        //}
+            //    return order;
+        }
+
 
         private async Task SetOrder(Order order)
         {

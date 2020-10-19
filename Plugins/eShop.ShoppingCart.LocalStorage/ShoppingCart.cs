@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace eShop.ShoppingCart.LocalStorage
@@ -15,11 +16,10 @@ namespace eShop.ShoppingCart.LocalStorage
         private const string cstrShoppingCart = "eShop.ShoppingCart";        
         private readonly IProductRepository productRepository;
 
-        public Order JsonConvert { get; private set; }
-
-        public ShoppingCart(IJSRuntime jsRuntime)
+        public ShoppingCart(IJSRuntime jsRuntime, IProductRepository productRepository)
         {
             this.jSRuntime = jsRuntime;
+            this.productRepository = productRepository;
         }
 
         Task<Order> IShopingCart.AddProductAsync(Product product)
@@ -63,20 +63,20 @@ namespace eShop.ShoppingCart.LocalStorage
 
             var strOrder = await jSRuntime.InvokeAsync<string>("localStorage.getItem", cstrShoppingCart);
             if (!string.IsNullOrWhiteSpace(strOrder) && strOrder.ToLower() != "null")
-                order = JsonConvert.DeserializeObject<Order>(strOrder);
-            else
-            {
-                order = new Order();
-                await SetOrder(order);
-            }
+                order = JsonConverter.DeserializeObject<Object>(strOrder);
+            //else
+        //    {
+        //        order = new Order();
+        //        await SetOrder(order);
+        //    }
 
-            foreach (var item in order.LineItems)
-            {
-                item.Product = productRepository.GetProduct(item.ProductId);
-            }
+        //    foreach (var item in order.LineItems)
+        //    {
+        //        item.Product = productRepository.GetProduct(item.ProductId);
+        //    }
 
-            return order;
-        }
+        //    return order;
+        //}
 
         private async Task SetOrder(Order order)
         {

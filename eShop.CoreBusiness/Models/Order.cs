@@ -8,6 +8,8 @@ namespace eShop.CoreBusiness.Models
 {
     public class Order
     {
+        public readonly Order DeserializeObject;
+
         public Order()
         {
             LineItems = new List<OrderLineItem>();

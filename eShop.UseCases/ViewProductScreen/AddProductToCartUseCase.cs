@@ -20,7 +20,6 @@ namespace eShop.UseCases.ViewProductScreen
         public async void Execute(int productId)
         {
             var product = productRepository.GetProduct(productId);
-
             await shopingCart.AddProductAsync(product);
         }
     }

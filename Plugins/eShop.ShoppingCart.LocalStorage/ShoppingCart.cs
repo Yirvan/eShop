@@ -2,6 +2,7 @@
 using eShop.UseCases.PluginInterfaces.DataStore;
 using eShop.UseCases.PluginInterfaces.UI;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -63,19 +64,19 @@ namespace eShop.ShoppingCart.LocalStorage
 
             var strOrder = await jSRuntime.InvokeAsync<string>("localStorage.getItem", cstrShoppingCart);
             if (!string.IsNullOrWhiteSpace(strOrder) && strOrder.ToLower() != "null")
-                order = JsonConverter.DeserializeObject<Object>(strOrder);
-            //else
-            //    {
-            //        order = new Order();
-            //        await SetOrder(order);
-            //    }
+                order = JsonConvert.DeserializeObject<Order>(strOrder);
+            else
+            {
+                order = new Order();
+                await SetOrder(order);
+            }
 
-            //    foreach (var item in order.LineItems)
-            //    {
-            //        item.Product = productRepository.GetProduct(item.ProductId);
-            //    }
+            foreach (var item in order.LineItems)
+            {
+                item.Product = productRepository.GetProduct(item.ProductId);
+            }
 
-            //    return order;
+            return order;
         }
 
 

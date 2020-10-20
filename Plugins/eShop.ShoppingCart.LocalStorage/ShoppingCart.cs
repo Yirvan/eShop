@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -23,39 +24,65 @@ namespace eShop.ShoppingCart.LocalStorage
             this.productRepository = productRepository;
         }
 
-        Task<Order> IShopingCart.AddProductAsync(Product product)
+        public async Task<Order> AddProductAsync(Product product)
+        {
+            var order = await GetOrder();
+            order.AddProduct(product.ProductId, 1, product.Price);
+            await SetOrder(order);
+
+            return order;
+        }
+
+        public async Task<Order> DeleteProductAsync(int productId)
+        {
+            var order = await GetOrder();
+            order.RemoveProduct(productId);
+            await SetOrder(order);
+
+            return order;
+        }
+
+        public Task EmptyAsync()
+        {
+            return this.SetOrder(null);
+        }
+
+        public async Task<Order> GetOrderAsync()
+        {
+            return await GetOrder();
+        }
+
+        public Task<Order> PlaceOrderAsync()
         {
             throw new NotImplementedException();
         }
 
-        Task<Order> IShopingCart.DeleteProductAsync(int productId)
+        public async Task<Order> UpdateOrderAsync(Order order)
         {
-            throw new NotImplementedException();
+            await this.SetOrder(order);
+            return order;
         }
 
-        Task IShopingCart.EmptyAsync()
+        public async Task<Order> UpdateQuantityAsync(int productId, int quantity)
         {
-            throw new NotImplementedException();
-        }
+            var order = await GetOrder();
+            if (quantity < 0)
+            {
+                return order;
+            }
+            else if (quantity == 0)
+            {
+                return await DeleteProductAsync(productId);
+            }
 
-        Task<Order> IShopingCart.GetOrderAsync()
-        {
-            throw new NotImplementedException();
-        }
+            var lineItem = order.LineItems.SingleOrDefault(x => x.ProductId == productId);
+            if (lineItem != null)
+            {
+                lineItem.Quantity = quantity;
+            }
+            await SetOrder(order);
 
-        Task<Order> IShopingCart.PlaceOrderAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Order> IShopingCart.UpdateOrderAsync(Order order)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Order> IShopingCart.UpdateQuantityAsync(int productId, int quantity)
-        {
-            throw new NotImplementedException();
+            return order;
         }
 
         private async Task<Order> GetOrder()

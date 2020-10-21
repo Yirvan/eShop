@@ -1,7 +1,7 @@
 ﻿@page "/"
 @page "/products"
 
-@inject ISearchProductUseCase searchProduct
+@inject eShop.UseCases.SearchProductScreen.ISearchProductUseCase searchProductUseCase
 
 <h3>Search Productst</h3>
 <br />
@@ -64,11 +64,11 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        products = searchProduct.Execute();
+        products = searchProductUseCase.Execute();
     }
 
     private void HandleSearch(string filter)
     {
-        products = searchProduct.Execute(filter);
+        products = searchProductUseCase.Execute(filter);
     }
 }

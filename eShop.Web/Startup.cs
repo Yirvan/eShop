@@ -15,6 +15,7 @@ using eShop.DataStore.HardCoded;
 using eShop.UseCases.ViewProductScreen;
 using eShop.UseCases.SearchProductScreen;
 using eShop.UseCases.PluginInterfaces.UI;
+using eShop.UseCases.SearchProductScreen.ShoppingCartScreen;
 //using eShop.ShoppingCart.LocalStorage;
 
 namespace eShop.Web
@@ -42,6 +43,7 @@ namespace eShop.Web
             services.AddTransient<IViewProductUseCase, ViewProductUseCase>();
             services.AddTransient<ISearchProductUseCase, SearchProductUseCase>();
             services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
+            services.AddTransient<IViewShoppingCartUseCase, ViewShoppingCartUseCase>();
 
         }
 

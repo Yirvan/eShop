@@ -14,6 +14,8 @@ using eShop.UseCases.PluginInterfaces.DataStore;
 using eShop.DataStore.HardCoded;
 using eShop.UseCases.ViewProductScreen;
 using eShop.UseCases.SearchProductScreen;
+using eShop.UseCases.PluginInterfaces.UI;
+//using eShop.ShoppingCart.LocalStorage;
 
 namespace eShop.Web
 {
@@ -34,9 +36,12 @@ namespace eShop.Web
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
+            services.AddScoped<IShopingCart, eShop.ShoppingCart.LocalStorage.ShoppingCart>();
+
             services.AddSingleton<IProductRepository,ProductRepository>();
             services.AddTransient<IViewProductUseCase, ViewProductUseCase>();
             services.AddTransient<ISearchProductUseCase, SearchProductUseCase>();
+            services.AddTransient<IAddProductToCartUseCase, AddProductToCartUseCase>();
 
         }
 

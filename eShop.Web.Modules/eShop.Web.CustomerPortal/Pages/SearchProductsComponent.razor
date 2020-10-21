@@ -1,4 +1,5 @@
-﻿@page "/products"
+﻿@page "/"
+@page "/products"
 
 @inject ISearchProductUseCase searchProduct
 
@@ -8,7 +9,20 @@
 <SearchBarComponent OnSearch="HandleSearch"></SearchBarComponent>
 <br />
 
-<table class="table">
+@if (products != null && products.Count()>0)
+{
+<div class="row">
+    @foreach (var product in products)
+    {
+        <ProductCardComponent Product="product"></ProductCardComponent>
+    }
+</div>
+} else
+{
+    <text>No Product Found.</text>
+}
+
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -39,7 +53,7 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@
 
 
 
